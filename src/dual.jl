@@ -108,8 +108,8 @@ isequal(z::Dual, x::Real) = real_valued(z) && isequal(real(z), x)
 isequal(x::Real, z::Dual) = real_valued(z) && isequal(real(z), x)
 
 isless(z::Dual,w::Dual) = real(z) < real(w)
-isless(z::Number,w::Dual) = z < real(w)
-isless(z::Dual,w::Number) = real(z) < w
+isless(z::Real,w::Dual) = z < real(w)
+isless(z::Dual,w::Real) = real(z) < w
 
 hash(z::Dual) =
   (x = hash(real(z)); real_valued(z) ? x : bitmix(x,hash(epsilon(z))))
@@ -125,13 +125,13 @@ absdual(z::Dual) = abs(real(z))
 abs2dual(z::Dual) = abs2(real(z))
 
 +(z::Dual, w::Dual) = dual(real(z)+real(w), epsilon(z)+epsilon(w))
-+(z::Number, w::Dual) = dual(z+real(w), epsilon(w))
-+(z::Dual, w::Number) = dual(real(z)+w, epsilon(z))
++(z::Real, w::Dual) = dual(z+real(w), epsilon(w))
++(z::Dual, w::Real) = dual(real(z)+w, epsilon(z))
 
 -(z::Dual) = dual(-real(z), -epsilon(z))
 -(z::Dual, w::Dual) = dual(real(z)-real(w), epsilon(z)-epsilon(w))
--(z::Number, w::Dual) = dual(z-real(w), -epsilon(w))
--(z::Dual, w::Number) = dual(real(z)-w, epsilon(z))
+-(z::Real, w::Dual) = dual(z-real(w), -epsilon(w))
+-(z::Dual, w::Real) = dual(real(z)-w, epsilon(z))
 
 # avoid ambiguous definition with Bool*Number
 *(x::Bool, z::Dual) = ifelse(x, z, ifelse(signbit(real(z))==0, zero(z), -zero(z)))
